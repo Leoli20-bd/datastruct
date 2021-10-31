@@ -1,0 +1,6 @@
+flink.restart.try.times: "5"
+flink.restart.interval: "3000"
+flink.checkpoint.interval: "30000"
+flink.checkpoint.timeout: "30000"
+flink.checkpoint.MinPauseBetweenCheckpoints: "0"
+flink.checkpoint.store.path: "file:///Users/haleli/myworld/data"
