@@ -27,6 +27,9 @@ trait BaseEnvironment {
   def init(tool: ParameterTool): StreamExecutionEnvironment = {
 
     val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
+
+    env.getConfig.setGlobalJobParameters(tool.mergeWith(ParameterTool.fromSystemProperties()))
+
     //set checkpoint config
     val config: CheckpointConfig = env.getCheckpointConfig
     config.setMaxConcurrentCheckpoints(1)

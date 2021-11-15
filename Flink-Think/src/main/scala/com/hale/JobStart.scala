@@ -16,17 +16,16 @@ import java.util
  * @Description: ${Desc}
  * @Version: ${Version}
  * */
-object JobStart extends BaseEnvironment{
+object JobStart extends BaseEnvironment {
   def main(args: Array[String]): Unit = {
     val path = "commonConfig.yaml"
 
     val map: util.HashMap[String, String] = ParameterUtils.init(path)
     val tool: ParameterTool = ParameterTool.fromMap(map)
-    print(tool.toMap)
 
     val env: StreamExecutionEnvironment = super.init(tool)
-    execute(tool,env)
-
+    print(env.getConfig)
+    execute(tool, env)
 
 
   }
