@@ -85,7 +85,6 @@ class MyBraodcastProcessFunction extends BroadcastProcessFunction[ActionLog, Loc
 
   override def processElement(in1: ActionLog, readOnlyContext: BroadcastProcessFunction[ActionLog, LocaltionInfo, (String, LocaltionInfo)]#ReadOnlyContext, collector: Collector[(String, LocaltionInfo)]): Unit = {
     val state: ReadOnlyBroadcastState[String, LocaltionInfo] = readOnlyContext.getBroadcastState(localDesc)
-
     if (state.contains(in1.localId)) {
       collector.collect(in1.userId, state.get(in1.localId))
     } else {

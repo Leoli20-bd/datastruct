@@ -40,32 +40,31 @@ object JobMapState {
 
 
   }
+}
 
-  class MyState extends RichMapFunction[OrderList, Double] {
-    var state: MapState[String, Double] = _
+class MyState extends RichMapFunction[OrderList, Double] {
+  var state: MapState[String, Double] = _
 
 
-    override def open(parameters: Configuration): Unit = {
-      state = getRuntimeContext.getMapState(new MapStateDescriptor[String, Double]("sum", createTypeInformation[String],createTypeInformation[Double]))
+  override def open(parameters: Configuration): Unit = {
+    state = getRuntimeContext.getMapState(new MapStateDescriptor[String, Double]("sum", createTypeInformation[String],createTypeInformation[Double]))
 
-    }
-
-    override def map(in: OrderList): Double = {
-      if(in.orderStatus.equals("Done")){
-        state.put(in.orderId,in.amount)
-      }else if(in.orderStatus.equals("Quite")){
-        if(state.contains(in.orderId)){
-          state.remove(in.orderId)
-        }
-      }
-
-      var sum = 0.0
-      state.values().forEach(x=>{
-        sum += x
-      })
-
-      sum
-    }
   }
 
+  override def map(in: OrderList): Double = {
+    if(in.orderStatus.equals("Done")){
+      state.put(in.orderId,in.amount)
+    }else if(in.orderStatus.equals("Quite")){
+      if(state.contains(in.orderId)){
+        state.remove(in.orderId)
+      }
+    }
+
+    var sum = 0.0
+    state.values().forEach(x=>{
+      sum += x
+    })
+
+    sum
+  }
 }
